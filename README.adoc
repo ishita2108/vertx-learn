@@ -28,4 +28,101 @@ To run your application:
 * https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
 * https://discord.gg/6ry7aqPWXy[Vert.x Discord]
 
+Notes
 
+vertx object - In Vert.x, the Vertx object is the central component of the framework, acting as the entry point for most of its functionality.
+It represents the core runtime environment and is responsible for managing:
+
+Event Loop: The Vertx instance creates and manages event loops, which are the foundation of Vert.x's non-blocking, reactive programming model.
+
+Verticles: It deploys and manages verticles, which are units of execution in a Vert.x application.
+
+Shared Resources: Provides APIs to access shared resources like event buses, file systems, and timers.
+
+In Vert.x, a verticle is the fundamental execution unit. It's similar to a thread or a process in traditional programming models
+but is designed for the event-driven and non-blocking architecture of Vert.x.
+
+A verticle encapsulates the logic of your application, such as handling HTTP requests, processing data, or interacting with external systems.
+It runs within the context of a Vertx instance and is managed by the Vert.x runtime.
+
+Key Features of Verticles
+Asynchronous and Non-Blocking:
+
+Verticles operate using an event loop, ensuring they do not block threads.
+They can process events (like incoming messages or timers) asynchronously.
+Isolation:
+Each verticle is isolated, meaning different verticles can run independently.
+
+Event Bus Communication:
+Verticles communicate with each other via the event bus, which supports point-to-point, publish-subscribe, and request-reply messaging.
+
+Lifecycle Management:
+Vert.x manages the lifecycle of verticles, including deployment, undeployment, and failure handling.
+
+In Vert.x, Event Loops are a crucial part of its concurrency model, handling asynchronous tasks in a non-blocking manner.
+Vert.x operates in a single-threaded, event-driven model where event loops are responsible for processing events and executing tasks in a non-blocking way.
+Here's a detailed explanation:
+
+1. What is an Event Loop in Vert.x?
+An Event Loop in Vert.x is a thread responsible for executing tasks and handling events.
+Vert.x uses event loops to process non-blocking operations asynchronously.
+The event loop is a fundamental part of the Vert.x concurrency model, enabling the system to handle thousands of concurrent operations with a small number of threads.
+
+2. How Does Vert.x Use Event Loops?
+Vert.x uses a single-threaded event loop per core by default, which can handle multiple
+tasks concurrently using non-blocking I/O. When an event (e.g., a network request) occurs, the event loop picks it up and processes it asynchronously.
+
+Vert.x provides Worker Verticles for tasks that need to block (e.g., database access) because blocking operations shouldn't be executed in the event loop.
+If blocking tasks are handled in the event loop, it can cause delays and hinder the overall performance of the system.
+
+3. Event Loop and Verticles
+Verticles are the units of deployment in Vert.x. A Verticle can be deployed on the event loop thread to process asynchronous tasks.
+Worker Verticles are a special kind of Verticle designed to handle blocking code. They run on worker threads, ensuring that the event loop is not blocked.
+
+4. Event Loop Model in Vert.x
+Vert.x provides a small set of event loops that handle asynchronous events.
+The event loops are executed on a fixed pool of threads. Each core in the machine runs its own event loop.
+Each event loop can handle tasks such as HTTP requests, messages from other Verticles, and other events.
+
+The Event Bus in Vert.x is a lightweight, high-performance messaging system that enables communication between different components of a
+ Vert.x application, such as Verticles, and even between separate Vert.x instances. It supports publish/subscribe, point-to-point, and request/response
+ messaging patterns.
+
+Key Features of the Event Bus
+Asynchronous Communication: Enables non-blocking message passing between Verticles.
+Clustered or Local: Can work within a single JVM or across a cluster of Vert.x instances.
+Dynamic Routing: Messages are dynamically routed based on addresses.
+Built-in Protocols: Works with JSON objects, strings, and binary buffers out of the box.
+Extensibility: Supports custom codecs for other message types.
+
+Messaging Patterns Supported by Event Bus
+Point-to-Point Messaging:
+
+A message sent to an address is consumed by one handler.
+Use send() for point-to-point communication.
+Publish/Subscribe Messaging:
+
+A message sent to an address is consumed by all handlers registered on that address.
+Use publish() for publish/subscribe communication.
+Request/Response Messaging:
+
+A sender can expect a reply from the receiver.
+Use send() with a reply handler for request/response communication.
+
+In Vert.x, a Codec is a mechanism for encoding and decoding objects that are sent over the Event Bus. It allows you to
+define how custom objects are serialized and deserialized when they are transmitted between different parts of your application.
+
+Why Use a Codec?
+The Event Bus can send basic types (e.g., String, Integer, JsonObject) by default.
+To send custom objects, Vert.x requires a way to serialize and deserialize them.
+A Codec defines how these custom objects are transformed into a transferable format (e.g., JSON or binary) and reconstructed on the receiving side.
+
+Future: Represents the result of an asynchronous operation that might not yet be completed. It can be succeeded or failed.
+Promise: A writable counterpart to a Future. It allows you to signal the success or failure of the asynchronous operation.
+
+Future: Represents the result of an asynchronous operation that might not yet be completed. It can be succeeded or failed.
+Promise: A writable counterpart to a Future. It allows you to signal the success or failure of the asynchronous operation.
+
+future can react on the outcome of promise
+
+promise == write view     future == read view
